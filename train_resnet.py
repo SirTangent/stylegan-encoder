@@ -2,6 +2,13 @@
 Trains a modified Resnet to generate approximate dlatents using examples from a trained StyleGAN.
 Props to @SimJeg on GitHub for the original code this is based on, from this thread: https://github.com/Puzer/stylegan-encoder/issues/1#issuecomment-490469454
 """
+
+# Load Configuration
+import configparser
+config = configparser.ConfigParser()
+config.read("settings.ini")
+glob = config["DEFAULT"]
+
 import os
 import math
 import numpy as np
@@ -202,7 +209,7 @@ def finetune_resnet(model, save_path, model_res=1024, image_size=256, batch_size
         model.save(save_path)
 
 parser = argparse.ArgumentParser(description='Train a ResNet to predict latent representations of images in a StyleGAN model from generated examples', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('--model_url', default='https://drive.google.com/uc?id=1MEGjdvVpUsu1jB4zrXZN7Y4kBBOzizDQ', help='Fetch a StyleGAN model to train on from this URL')
+parser.add_argument('--model_url', default=glob['ResnetModelURL'], help='Fetch a StyleGAN model to train on from this URL')
 parser.add_argument('--model_res', default=1024, help='The dimension of images in the StyleGAN model', type=int)
 parser.add_argument('--data_dir', default='data', help='Directory for storing the ResNet model')
 parser.add_argument('--model_path', default='data/finetuned_resnet.h5', help='Save / load / create the ResNet model with this file path')

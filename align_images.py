@@ -1,3 +1,9 @@
+# Load Configuration
+import configparser
+config = configparser.ConfigParser()
+config.read("settings.ini")
+glob = config["DEFAULT"]
+
 import os
 import sys
 import bz2
@@ -7,7 +13,7 @@ from ffhq_dataset.face_alignment import image_align
 from ffhq_dataset.landmarks_detector import LandmarksDetector
 import multiprocessing
 
-LANDMARKS_MODEL_URL = 'http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2'
+LANDMARKS_MODEL_URL = glob['LandmarksModelURL']
 
 
 def unpack_bz2(src_path):
