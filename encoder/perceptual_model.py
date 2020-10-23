@@ -180,8 +180,9 @@ class PerceptualModel:
         if (self.mssim_loss is not None):
             self.loss += self.mssim_loss * tf.math.reduce_mean(1-tf.image.ssim_multiscale(self.ref_weight * self.ref_img, self.ref_weight * generated_image, 1))
         # + extra perceptual loss on image pixels
-        if self.perc_model is not None and self.lpips_loss is not None:
-            self.loss += self.lpips_loss * tf.math.reduce_mean(self.perc_model.get_output_for(img1, img2))
+        # !DISABLED DUE TO BUG!
+        # if self.perc_model is not None and self.lpips_loss is not None:
+        #     self.loss += self.lpips_loss * tf.math.reduce_mean(self.perc_model.get_output_for(img1, img2))
         # + L1 penalty on dlatent weights
         if self.l1_penalty is not None:
             self.loss += self.l1_penalty * 512 * tf.math.reduce_mean(tf.math.abs(generator.dlatent_variable-generator.get_dlatent_avg()))
