@@ -45,6 +45,10 @@ if __name__ == "__main__":
     RAW_IMAGES_DIR = args.raw_dir
     ALIGNED_IMAGES_DIR = args.aligned_dir
 
+    # Create alignment directory if none exists
+    if not os.path.exists(ALIGNED_IMAGES_DIR):
+        os.makedirs(ALIGNED_IMAGES_DIR)
+
     landmarks_detector = LandmarksDetector(landmarks_model_path)
     for img_name in os.listdir(RAW_IMAGES_DIR):
         print('Aligning %s ...' % img_name)
