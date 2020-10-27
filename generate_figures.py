@@ -7,6 +7,12 @@
 
 """Minimal script for reproducing the figures of the StyleGAN paper using pre-trained generators."""
 
+# Load Configuration
+import configparser
+config = configparser.ConfigParser()
+config.read("settings.ini")
+glob = config["DEFAULT"]
+
 import os
 import pickle
 import numpy as np
@@ -18,11 +24,11 @@ import config
 #----------------------------------------------------------------------------
 # Helpers for loading and using pre-trained generators.
 
-url_ffhq        = 'https://drive.google.com/uc?id=1MEGjdvVpUsu1jB4zrXZN7Y4kBBOzizDQ' # karras2019stylegan-ffhq-1024x1024.pkl
-url_celebahq    = 'https://drive.google.com/uc?id=1MGqJl28pN4t7SAtSrPdSRJSQJqahkzUf' # karras2019stylegan-celebahq-1024x1024.pkl
-url_bedrooms    = 'https://drive.google.com/uc?id=1MOSKeGF0FJcivpBI7s63V9YHloUTORiF' # karras2019stylegan-bedrooms-256x256.pkl
-url_cars        = 'https://drive.google.com/uc?id=1MJ6iCfNtMIRicihwRorsM3b7mmtmK9c3' # karras2019stylegan-cars-512x384.pkl
-url_cats        = 'https://drive.google.com/uc?id=1MQywl0FNt6lHu8E_EUqnRbviagS7fbiJ' # karras2019stylegan-cats-256x256.pkl
+url_ffhq        = glob['ResnetModelURL'] # karras2019stylegan-ffhq-1024x1024.pkl
+url_celebahq    = glob['CelebahqModelURL'] # karras2019stylegan-celebahq-1024x1024.pkl
+url_bedrooms    = glob['BedroomsModelURL'] # karras2019stylegan-bedrooms-256x256.pkl
+url_cars        = glob['CarsModelURL'] # karras2019stylegan-cars-512x384.pkl
+url_cats        = glob['CatsModelURL'] # karras2019stylegan-cats-256x256.pkl
 
 synthesis_kwargs = dict(output_transform=dict(func=tflib.convert_images_to_uint8, nchw_to_nhwc=True), minibatch_size=8)
 

@@ -7,6 +7,12 @@
 
 """Main entry point for training StyleGAN and ProGAN networks."""
 
+# Load Configuration
+import configparser
+config = configparser.ConfigParser()
+config.read("settings.ini")
+glob = config["DEFAULT"]
+
 import dnnlib
 from dnnlib import EasyDict
 import dnnlib.tflib as tflib
@@ -74,7 +80,7 @@ def main():
 
     # Which networks to evaluate them on?
     tasks = []
-    tasks += [EasyDict(run_func_name='run_metrics.run_pickle', network_pkl='https://drive.google.com/uc?id=1MEGjdvVpUsu1jB4zrXZN7Y4kBBOzizDQ', dataset_args=EasyDict(tfrecord_dir='ffhq', shuffle_mb=0), mirror_augment=True)] # karras2019stylegan-ffhq-1024x1024.pkl
+    tasks += [EasyDict(run_func_name='run_metrics.run_pickle', network_pkl=glob['ResnetModelURL'], dataset_args=EasyDict(tfrecord_dir='ffhq', shuffle_mb=0), mirror_augment=True)] # karras2019stylegan-ffhq-1024x1024.pkl
     #tasks += [EasyDict(run_func_name='run_metrics.run_snapshot', run_id=100, snapshot=25000)]
     #tasks += [EasyDict(run_func_name='run_metrics.run_all_snapshots', run_id=100)]
 
