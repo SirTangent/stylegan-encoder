@@ -98,6 +98,12 @@ def main():
 
     args, other_args = parser.parse_known_args()
 
+    # Create directories if none exists
+    if not os.path.exists(args.generated_images_dir):
+        os.makedirs(args.generated_images_dir)
+    if not os.path.exists(args.dlatent_dir):
+        os.makedirs(args.dlatent_dir)
+
     args.decay_steps *= 0.01 * args.iterations # Calculate steps as a percent of total iterations
 
     if args.output_video:
