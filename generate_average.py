@@ -6,6 +6,7 @@ config.read("settings.ini")
 glob = config["DEFAULT"]
 
 import os
+import argparse
 import numpy as np
 import config
 import dnnlib
@@ -29,16 +30,29 @@ def load_latents(dir):
     return (1 / len(s)) * sum(s)
 
 
-print("RUN_NEW")
-savg = load_latents('images-latent/test_1')
+def main():
+    parser = argparse.ArgumentParser(
+        description='Generate the average face from a directory of latents.',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('src_dir', help='Directory with latents')
+    parser.add_argument('--dst_dir', default='images-average/', help='Directory to output average')
+    parser.add_argument('--name', default='output', help='PNG file name to output')
 
-save_dir = "images-average/"
+    args, other_args = parser.parse_known_args()
 
-# run the generator network to render the latents:
-synthesis_kwargs = dict(output_transform=dict(func=tflib.convert_images_to_uint8, nchw_to_nhwc=False), minibatch_size=8)
-images = Gs_network.components.synthesis.run(savg, randomize_noise=False, **synthesis_kwargs)
-# display(PIL.Image.fromarray(images.transpose((0,2,3,1))[0], 'RGB').resize((512,512),PIL.Image.LANCZOS))
+    savg = load_latents(args.src_dir)
 
-out_name = save_dir + "test_1" + ".png"
-img = PIL.Image.fromarray(images.transpose((0, 2, 3, 1))[0], 'RGB').resize((512, 512), PIL.Image.LANCZOS)
-img.save(out_name)
+    save_dir = args.dst_dir
+
+    # run the generator network to render the latents:
+    synthesis_kwargs = dict(output_transform=dict(func=tflib.convert_images_to_uint8, nchw_to_nhwc=False),
+                            minibatch_size=8)
+    images = Gs_network.components.synthesis.run(savg, randomize_noise=False, **synthesis_kwargs)
+    # display(PIL.Image.fromarray(images.transpose((0,2,3,1))[0], 'RGB').resize((512,512),PIL.Image.LANCZOS))
+
+    out_name = os.path.join(save_dir, args.name + ".png")
+    img = PIL.Image.fromarray(images.transpose((0, 2, 3, 1))[0], 'RGB').resize((512, 512), PIL.Image.LANCZOS)
+    img.save(out_name)
+
+if __name__ == "__main__":
+    main()
