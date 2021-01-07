@@ -37,3 +37,10 @@ class runtime:
 
         # Run asynchronously
         return os.system(f"python generate_average.py {latent_dir} {f'--dst_dir {head}' if head else ''} --name={tail}")
+
+    def run_pipeline(self, src_dir="", aligned_dir="", gen_dir="", latent_dir="", output_file=""):
+        return [
+            self.run_aligner(src_dir, aligned_dir),
+            self.run_encoder(aligned_dir, gen_dir, latent_dir),
+            self.run_averager(latent_dir, output_file)
+        ]
