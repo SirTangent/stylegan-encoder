@@ -23,3 +23,17 @@ class runtime:
 
         # Run asynchronously
         return os.system(f"python encode_images.py --batch_size=1 --output_video=False {aligned_dir} {gen_dir} {latent_dir}")
+
+    def run_averager(self, latent_dir="", output_file=""):
+        if latent_dir == "":
+            latent_dir = os.path.join(self.dir, "images-latent")
+        if output_file == "":
+            output_file = os.path.join(self.dir, "images-average/out")
+
+        # Split path
+        head, tail = os.path.split(output_file)
+
+        # TODO: Validate appropriate path name
+
+        # Run asynchronously
+        return os.system(f"python generate_average.py {latent_dir} {f'--dst_dir {head}' if head else ''} --name={tail}")
