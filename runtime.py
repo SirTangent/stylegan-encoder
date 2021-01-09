@@ -1,7 +1,7 @@
 import os
 
 
-class runtime:
+class Runtime:
     def __init__(self, img_dir="images/"):
         self.dir = img_dir
 
