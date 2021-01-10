@@ -1,9 +1,20 @@
 import os
 
+from uuid import uuid1 as uuid
+
 
 class Runtime:
-    def __init__(self, img_dir="images/"):
-        self.dir = img_dir
+    def __init__(self, img_dir="images/", generate_folder=False):
+        if generate_folder:
+            # Generate job UUID
+            job_uuid = uuid()
+            job_dir = f"{img_dir}{job_uuid}/"
+            os.mkdir(job_dir)
+
+            self.dir = job_dir
+            self.uuid = job_uuid
+        else:
+            self.dir = img_dir
 
     def run_aligner(self, src_dir="", target_dir=""):
         if src_dir == "":
