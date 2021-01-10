@@ -7,3 +7,6 @@
 
 *.pyc
 generate_average.py
+*.tmp
+geckodriver.log
+.ipynb_checkpoints
